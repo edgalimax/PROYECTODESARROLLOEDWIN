@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block page_title %}Eliminar{% endblock %}
+{% block content %}
+<div class="card p-3">
+  <h5>¿Eliminar <strong>{{ obj.nombre }}</strong>?</h5>
+  <form method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger btn-rounded">Eliminar</button>
+    <a class="btn btn-secondary btn-rounded" href="{% url 'personal:list' %}">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

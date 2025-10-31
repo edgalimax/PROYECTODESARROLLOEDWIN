@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block page_title %}Detalle de Personal{% endblock %}
+{% block content %}
+<div class="card p-3">
+  <dl class="row">
+    <dt class="col-sm-3">Nombre</dt><dd class="col-sm-9">{{ obj.nombre }}</dd>
+    <dt class="col-sm-3">DPI</dt><dd class="col-sm-9">{{ obj.dpi }}</dd>
+    <dt class="col-sm-3">Teléfono</dt><dd class="col-sm-9">{{ obj.telefono }}</dd>
+    <dt class="col-sm-3">Proyecto</dt><dd class="col-sm-9">{{ obj.get_proyecto_display }}</dd>
+    <dt class="col-sm-3">Estado</dt><dd class="col-sm-9">{{ obj.get_estado_display }}</dd>
+    <dt class="col-sm-3">Fecha ingreso</dt><dd class="col-sm-9">{{ obj.fecha_ingreso }}</dd>
+    <dt class="col-sm-3">Observaciones</dt><dd class="col-sm-9">{{ obj.observaciones|default:'-' }}</dd>
+  </dl>
+  <a class="btn btn-secondary btn-rounded" href="{% url 'personal:list' %}">Volver</a>
+</div>
+{% endblock %}

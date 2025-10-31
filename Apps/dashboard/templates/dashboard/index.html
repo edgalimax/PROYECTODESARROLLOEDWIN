@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3 class="mb-3">Dashboard</h3>
+<div class="row g-3">
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6 class="text-muted">Personal Activo</h6>
+        <h2>{{ total_activo }}</h2>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6 class="text-muted">Requisiciones Pendientes</h6>
+        <h2>{{ req_pendientes }}</h2>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6 class="text-muted">Distribución por Proyecto</h6>
+        <ul class="mb-0">
+          {% for row in por_proyecto %}
+            <li>{{ row.proyecto|title }}: <strong>{{ row.total }}</strong></li>
+          {% empty %}
+            <li class="text-muted">Sin datos</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
