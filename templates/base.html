@@ -1,54 +1,189 @@
 {% load static %}
 <!doctype html>
 <html lang="es">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Delivery Lab</title>
+
+    <!-- CSS -->
     <link rel="stylesheet" href="{% static 'ogistic/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'ogistic/css/font-awesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'ogistic/css/style.css' %}">
+
     <style>
-      body { background:#f5f6fa; }
-      .sidebar { width:260px; position:fixed; top:0; bottom:0; left:0; background:#0d47a1; color:#fff; padding:1rem; }
-      .sidebar a { color:#fff; text-decoration:none; display:block; padding:.6rem .8rem; border-radius:.5rem; }
-      .sidebar a.active, .sidebar a:hover { background:#1263bf; }
-      .brand { font-weight:700; font-size:1.2rem; margin-bottom:1rem; }
-      .content { margin-left:280px; padding:1.5rem; }
-      .topbar { background:#fff; border-bottom:1px solid #e5e7eb; padding:.8rem 1rem; border-radius:.75rem; margin-bottom:1rem; }
-      .card { border-radius:.75rem; border:1px solid #e5e7eb; }
-      .btn-rounded { border-radius:.5rem; }
-      .table thead th { background:#f1f5f9; }
+        body {
+            background: #f5f6fa;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            background: #0d47a1;
+            color: #fff;
+            padding: 1rem;
+        }
+
+        .brand {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .sidebar nav a,
+        .sidebar nav form button {
+            width: 100%;
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            background: transparent;
+            border: 0;
+            padding: .6rem .8rem;
+            border-radius: .5rem;
+            font-size: .95rem;
+        }
+
+        .sidebar nav a.active,
+        .sidebar nav a:hover,
+        .sidebar nav form button:hover {
+            background: #1263bf;
+        }
+
+        /* Content wrapper */
+        .content {
+            margin-left: 280px;
+            padding: 1.5rem;
+        }
+
+        /* Top bar */
+        .topbar {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            padding: .8rem 1rem;
+            border-radius: .75rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Cards / tables */
+        .card {
+            border-radius: .75rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .btn-rounded {
+            border-radius: .5rem;
+        }
+
+        .table thead th {
+            background: #f1f5f9;
+        }
+
+        /* Small utility to space out icon/text */
+        .nav-icon {
+            margin-right: .5rem;
+            width: 18px;
+            text-align: center;
+        }
     </style>
-  </head>
-  <body>
+</head>
+
+<body>
+    <!-- Sidebar -->
     <aside class="sidebar">
-      <div class="brand">Delivery Lab</div>
-      <nav>
-        <a href="{% url 'dashboard:index' %}" class="{% if request.resolver_match.app_name == 'dashboard' %}active{% endif %}"><i class="fa fa-home me-2"></i>Dashboard</a>
-        <a href="{% url 'personal:list' %}" class="{% if request.resolver_match.app_name == 'personal' %}active{% endif %}"><i class="fa fa-users me-2"></i>Personal</a>
-        <a href="{% url 'requisiciones:list' %}" class="{% if request.resolver_match.app_name == 'requisiciones' %}active{% endif %}"><i class="fa fa-clipboard me-2"></i>Requisiciones</a>
-        {% if request.user.is_authenticated %}
-        <a href="{% url 'usuarios:logout' %}"><i class="fa fa-sign-out me-2"></i>Salir</a>
-        {% else %}
-        <a href="{% url 'usuarios:login' %}"><i class="fa fa-sign-in me-2"></i>Ingresar</a>
-        {% endif %}
-      </nav>
+        <header class="brand">
+            Delivery Lab
+        </header>
+
+        <nav aria-label="Menú principal">
+            <a
+                href="{% url 'dashboard:index' %}"
+                class="{% if request.resolver_match.app_name == 'dashboard' %}active{% endif %}"
+            >
+                <i class="fa fa-home nav-icon" aria-hidden="true"></i>
+                Dashboard
+            </a>
+
+            <a
+                href="{% url 'personal:list' %}"
+                class="{% if request.resolver_match.app_name == 'personal' %}active{% endif %}"
+            >
+                <i class="fa fa-users nav-icon" aria-hidden="true"></i>
+                Personal
+            </a>
+
+            <a
+                href="{% url 'requisiciones:list' %}"
+                class="{% if request.resolver_match.app_name == 'requisiciones' %}active{% endif %}"
+            >
+                <i class="fa fa-clipboard nav-icon" aria-hidden="true"></i>
+                Requisiciones
+            </a>
+
+            {% if request.user.is_authenticated %}
+                <!-- Logout como POST: más seguro en Django -->
+                <form
+                    action="{% url 'usuarios:logout' %}"
+                    method="post"
+                    class="p-0 m-0"
+                >
+                    {% csrf_token %}
+                    <button type="submit">
+                        <i class="fa fa-sign-out nav-icon" aria-hidden="true"></i>
+                        Salir
+                    </button>
+                </form>
+            {% else %}
+                <a href="{% url 'usuarios:login' %}">
+                    <i class="fa fa-sign-in nav-icon" aria-hidden="true"></i>
+                    Ingresar
+                </a>
+            {% endif %}
+        </nav>
     </aside>
+
+    <!-- Main content -->
     <main class="content">
-      <div class="topbar d-flex justify-content-between align-items-center">
-        <div><strong>{% block page_title %}{% endblock %}</strong></div>
-        <div class="text-muted small">Usuario: {{ request.user.username|default:'-' }}</div>
-      </div>
-      {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-          {{ message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <!-- Top bar -->
+        <div class="topbar d-flex flex-wrap flex-md-nowrap justify-content-between align-items-center">
+            <div class="fw-semibold">
+                {% block page_title %}{% endblock %}
+            </div>
+
+            <div class="text-muted small ms-md-3 mt-2 mt-md-0">
+                Usuario:
+                <strong>{{ request.user.username|default:"-" }}</strong>
+            </div>
         </div>
-      {% endfor %}
-      {% block content %}{% endblock %}
+
+        <!-- Flash messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div
+                    class="alert alert-{{ message.tags }} alert-dismissible fade show"
+                    role="alert"
+                >
+                    {{ message }}
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Cerrar"
+                    ></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Page content -->
+        {% block content %}{% endblock %}
     </main>
+
+    <!-- JS -->
     <script src="{% static 'ogistic/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'ogistic/js/main.js' %}"></script>
-  </body>
+</body>
 </html>
