@@ -1,0 +1,22 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Environments
+.env
+venv/
+.env.local
+.env.*
+
+# Django stuff
+/staticfiles/
+db.sqlite3
+
+# VSCode
+.vscode/
+.history/
+
+# Git
+*.orig
+
