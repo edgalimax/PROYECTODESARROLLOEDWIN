@@ -9,14 +9,10 @@ venv/
 .env.local
 .env.*
 
-# Django stuff
+# Django
 /staticfiles/
 db.sqlite3
 
 # VSCode
 .vscode/
 .history/
-
-# Git
-*.orig
-
